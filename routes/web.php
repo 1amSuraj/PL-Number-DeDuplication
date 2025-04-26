@@ -27,3 +27,7 @@ Route::get('/logs', function () {
     $logs = file(storage_path('logs/custom.log'));
     return view('logs.index', compact('logs'));
 });
+
+
+Route::delete('/pl-delete/{id}', [PriceListController::class, 'destroy'])->name('pl.delete');
+Route::put('/pl-update/{id}', [PriceListController::class, 'update'])->name('pl.update');

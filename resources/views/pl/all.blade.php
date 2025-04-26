@@ -27,6 +27,7 @@
                         <th class="px-4 py-3 text-left">PL Number</th>
                         <th class="px-4 py-3 text-left">Created At</th>
                         <th class="px-4 py-3 text-left">Updated At</th>
+                        <th class="px-4 py-3 text-left">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -36,6 +37,30 @@
                         <td class="px-4 py-3">{{ $record->pl_number }}</td>
                         <td class="px-4 py-3">{{ $record->created_at }}</td>
                         <td class="px-4 py-3">{{ $record->updated_at }}</td>
+                        <td class="px-4 py-3 space-x-2">
+                            {{-- Delete --}}
+                            <form method="POST" action="{{ route('pl.delete', $record->id) }}" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-600 hover:text-red-800 text-sm font-medium"
+                                    onclick="return confirm('Delete this record?')">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+
+                            {{-- Update --}}
+                            <form method="POST" action="{{ route('pl.update', $record->id) }}" class="inline-block">
+                                @csrf
+                                @method('PUT')
+                                <input type="text" name="pl_number" value="{{ $record->pl_number }}"
+                                    class="border border-gray-300 rounded-md px-2 py-1 w-32 text-sm focus:ring focus:ring-blue-300"
+                                    required>
+                                <button type="submit"
+                                    class="text-blue-600 hover:text-blue-800 ml-1 text-sm font-medium">
+                                    ✏️ Update
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
