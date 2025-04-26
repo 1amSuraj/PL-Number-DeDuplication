@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PriceList;
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class PriceListController extends Controller
 {
@@ -29,9 +31,18 @@ class PriceListController extends Controller
         ]);
 
         // Keep one, delete others
+        $mergedEntries = PriceList::whereIn('id', $request->merge_ids)
+        ->where('id', '!=', $request->keep_id)
+        ->pluck('id')
+        ->toArray();
+       
         PriceList::whereIn('id', $request->merge_ids)
             ->where('id', '!=', $request->keep_id)
             ->delete();
+
+            // Log the merge action
+            Log::channel('custom')->info('[' . now() . '] merged[' . implode(',', $mergedEntries) . '] into keep_id[' . $request->keep_id . ']');
+
 
             return redirect()->route('pl.manage')->with('success', 'Duplicates merged successfully.');
         }
@@ -49,7 +60,12 @@ class PriceListController extends Controller
     {
         // Find and delete the record
         $record = PriceList::findOrFail($id);
+        $deletedPlNumber = $record->pl_number;
         $record->delete();
+
+        // Log the delete action
+        Log::channel('custom')->info('[' . now() . '] deleted[id-' . $id . ', pl_number-' . $deletedPlNumber . ']');
+
     
         // Redirect back to the pl-manage page with updated duplicate records
         return redirect()->route('pl.manage')->with('success', 'Record deleted successfully.');
@@ -67,8 +83,13 @@ class PriceListController extends Controller
 
     // Find and update the record
     $item = PriceList::findOrFail($id);
+    $oldPlNumber = $item->pl_number;
     $item->pl_number = $request->pl_number;
     $item->save();
+
+    // Log the update action
+    Log::channel('custom')->info('[' . now() . '] updated[id-' . $id . ', old_pl_number-' . $oldPlNumber . ', new_pl_number-' . $request->pl_number . ']');
+
 
     // Redirect back to the pl-manage page with a success message
     return redirect()->route('pl.manage')->with('success', 'Record updated successfully.');
@@ -154,6 +175,11 @@ public function showDuplicates(Request $request)
     return view('pl.manage', compact('records', 'sortColumn', 'sortDirection'));
 }
 
+public function showAll()
+{
+    $records = PriceList::all(); // Fetch all records from the database
+    return view('pl.all', compact('records'));
+}
 
 
 

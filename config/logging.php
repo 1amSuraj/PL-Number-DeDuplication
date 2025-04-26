@@ -51,6 +51,7 @@ return [
     */
 
     'channels' => [
+        
 
         'stack' => [
             'driver' => 'stack',
@@ -125,6 +126,15 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+        'custom' => [
+        'driver' => 'single',
+        'path' => storage_path('logs/custom.log'),
+        'level' => 'info',
+        'formatter' => env('LOG_CUSTOM_FORMATTER', \Monolog\Formatter\LineFormatter::class),
+        'formatter_with' => [
+            'format' => "%message%\n", // Only log the message
+        ],
         ],
 
     ],

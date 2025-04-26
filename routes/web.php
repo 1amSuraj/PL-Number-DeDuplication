@@ -19,3 +19,11 @@ Route::get('/pl-manage', [PriceListController::class, 'showDuplicates'])->name('
 Route::post('/pl-merge', [PriceListController::class, 'merge'])->name('pl.merge');
 Route::delete('/pl-delete/{id}', [PriceListController::class, 'destroy'])->name('pl.delete');
 Route::put('/pl-update/{id}', [PriceListController::class, 'update'])->name('pl.update');
+Route::get('/pl-all', [PriceListController::class, 'showAll'])->name('pl.all');
+
+
+
+Route::get('/logs', function () {
+    $logs = file(storage_path('logs/custom.log'));
+    return view('logs.index', compact('logs'));
+});
