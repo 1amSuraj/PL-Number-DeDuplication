@@ -9,6 +9,9 @@ Route::delete('/price-lists/{id}', [PriceListController::class, 'destroy']);
 Route::put('/price-lists/{id}', [PriceListController::class, 'update']);
 Route::post('/price-lists', [PriceListController::class, 'store']);
 
+Route::get('/', function () {
+    return view('home');
+})->name('home');
 
 Route::get('/pl-form', [PriceListController::class, 'create'])->name('pl.create');
 Route::post('/pl-submit', [PriceListController::class, 'submitViaForm'])->name('pl.submit');

@@ -47,14 +47,7 @@ class PriceListController extends Controller
             return redirect()->route('pl.manage')->with('success', 'Duplicates merged successfully.');
         }
 
-    // Delete an entry
-    // public function destroy($id)
-    // {
-    //     $item = PriceList::findOrFail($id);
-    //     $item->delete();
-
-    //     return response()->json(['message' => 'Deleted successfully.']);
-    // }
+    
 
     public function destroy($id)
     {

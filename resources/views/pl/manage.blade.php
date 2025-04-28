@@ -15,6 +15,10 @@
             class="absolute left-5 top-6 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full font-semibold shadow-md transition">
             ➕ Add New PL
         </a>
+        <a href="{{ route('pl.all') }}"
+            class="absolute right-10 top-6 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full font-semibold shadow-md transition">
+            View All
+        </a>
         @if(session('success'))
         <div class="mb-6 text-green-700 font-semibold text-center bg-green-100 p-3 rounded-md shadow">
             {{ session('success') }}
